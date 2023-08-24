@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-
+import { signUp } from '../services/user-service';
 
 
 
 function Phase1_from() {
-    const [ID,setID] = useState("");    // We can store the value in this state variable
-    const [Name,setName] = useState("");
-    const [TotalSal,setTotalSal] = useState("");
-    const [Allowance,setAllowance] = useState("");
-    const [Date,setDate] = useState("");
+    const [CompanyID,setID] = useState("");    // We can store the value in this state variable
+    const [CompanyName,setName] = useState("");
+    const [Total_Monthly_Salary,setTotalSal] = useState("");
+    const [Total_Monthly_Allowance,setAllowance] = useState("");
+    const [DataAddedDate,setDate] = useState("");
 
     const [AllEntry,setAllEntry] = useState([]);
 
@@ -18,55 +18,59 @@ function Phase1_from() {
         // {
         //     alert("These Fields are Mandatory")
         // }
-        const newEntry = {CompanyID : ID , CompanyName : Name , Date : Date };
+        const newEntry = {CompanyID : CompanyID , CompanyName : CompanyName , Date : DataAddedDate };
 
         setAllEntry([...AllEntry,newEntry]);    // These two data are connect with back end
         console.log(AllEntry);  // This data is also conncect to the back end using the axios library or nodejs we can connect to the back end
+        
+        //Call server api for sending data(AllEntry)
+        signUp(AllEntry).then((resp)=>{ // then is working like try in java
+            console.log(resp)
+            console.log("Sucess Log")
+        }).catch((error)=>{
+            console.log(error)
+            console.log("Error Log")
+        })
+
+
     }
 
 
   return (
-    <div className='container container-fluid min-vh-100 d-flex justify-content-center align-items-center ' style={{width:"400px"}} >
+    // 'container container-fluid min-vh-100 d-flex justify-content-center align-items-center'
+    <div className='container container-fluid col-5'>
      {/* style={{width:"400px"}} */}
      
-      <form className='form-control border-primary' action='Project' onSubmit={submitform} >    
+      <form className='form-label text-center' action='Project' onSubmit={submitform} >    
         {/* onsubmit event is use to submit the detail we have to define the onsubmit  */}
         {/* value is us to store the each value which is pass  */}
-        <div>   
-            <>Current Budget is </>
-        </div>
-
-        <div className='form-label text-center pb-2' >
-            <label htmlFor='ID' >CompanyID : </label>
-            <input className='form-'  type='text' name='ID' placeholder='Company ID'
-             value={ID} onChange={(I) =>setID(I.target.value) } ></input>  
-        </div>  
-
-        <div className='form-label text-center pb-2'>
-            <label htmlFor='Name' >CompanyName : </label>
-            <input type='text' name='Name' placeholder='Company Name' value={Name} onChange={(N) =>setName(N.target.value) } ></input>
-        </div>
-
-        <div className='form-label text-center pb-2'>
-            <label htmlFor='TotalSal' >TotalSal : </label>
-            <input type='text' name='TotalSal' placeholder='Salary' value={TotalSal} onChange={(T) =>setTotalSal(T.target.value) }  ></input>
-        </div>
-
-        <div className='form-label text-center pb-2'>
-            <label htmlFor='Allowance' >Allowance : </label>
-            <input type='number' name='Allowance' placeholder='Allowance' value={Allowance} onChange={(A) =>setAllowance(A.target.value) } ></input>
-        </div>
-
-        <div className='form-label text-center pb-2'>
-            <label htmlFor='Date' >Date : </label>
-            <input type='date' name='Date' value={Date} onChange={(D) =>setDate(D.target.value) } ></input>   
-        </div>
-
-        <button className='btn btn-primary' type='submit' >submit</button> &nbsp;
         
+           
+            <>Current Budget is </> &nbsp;
+            <br></br>
+            <label className='form-lable' >CompanyID </label>
+            <input className='form-control'  type='text' name='CompanyID' placeholder='Company ID'value={CompanyID} onChange={(I) =>setID(I.target.value) } ></input>  
+            
+            <label className='form-lable' >CompanyName</label>        
+            <input className='form-control' type='text' name='CompanyName' placeholder='Company Name' value={CompanyName} onChange={(N) =>setName(N.target.value) } ></input>
+       
+            <label className='form-lable'>Date : </label>
+            <input className='form-control'  type='date' name='DataAddedDate' value={DataAddedDate} onChange={(D) =>setDate(D.target.value) } ></input>   
+
+            <label className='form-lable'>TotalSal : </label>
+            <input className='form-control' type='text' name='Total_Monthly_Salary' placeholder='Salary' value={Total_Monthly_Salary} onChange={(T) =>setTotalSal(T.target.value) }  ></input>
+       
+            
+            <label className='form-lable'>Allowance : </label>
+            <input className='form-control' type='number' name='Total_Monthly_Allowance' placeholder='Allowance' value={Total_Monthly_Allowance} onChange={(A) =>setAllowance(A.target.value) } ></input>
+        
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        {/* goes to new line  */}
       </form>
         <br></br>
-        <div>
+        
+        {/* <div>
             {
                 AllEntry.map((curElem)=> {
                     return(
@@ -75,18 +79,27 @@ function Phase1_from() {
                                 <tr>
                                     <td>{curElem.CompanyID}</td>
                                     <td>{curElem.CompanyName}</td>
-                                    <td>{curElem.Date}</td>
+                                    <td>{curElem.DataAddedDate}</td>
                                 </tr>
-                            </table>
-                            
+                            </table>       
                         </div>
                     )
                 })
             }
-        </div>
+        </div> */}
 
     </div>
   )
 }
 
 export default Phase1_from
+
+/*
+what is axios?
+=> It is the upgraded version of the fetch api 
+
+Advantages
+1.when we call the axios by default it is json formate
+2.with help of axios we use all http methods(get ,post, put,patch)
+
+*/
